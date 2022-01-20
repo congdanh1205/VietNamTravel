@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:travel_app/model/new_feed_json.dart';
-import 'package:travel_app/model/sites_json.dart';
+import 'package:travel_app/model/place.dart';
+import 'package:travel_app/widget/horizontal_place_item.dart';
+import 'package:travel_app/widget/vertical_place_item.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -10,6 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
+  _buildHightLight() {}
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -45,293 +47,68 @@ class HomeScreenState extends State<HomeScreen> {
   Widget getBody(size) {
     return ListView(
       children: [
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: List.generate(
-              sites.length,
-              (index) {
-                return Padding(
-                  padding: EdgeInsets.all(3.0),
-                  child: Container(
-                    child: Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              colors: [
-                                Color(0xffA844A1),
-                                Color(0xffAB429A),
-                                Color(0xffB43C88),
-                                Color(0xffC33269),
-                                Color(0xffD7243F),
-                                Color(0xffF9A326),
-                                Color(0xffF9DD26),
-                              ],
-                            ),
-                          ),
-                          child: Container(
-                            width: 70,
-                            height: 70,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                  width: 2, color: Color(0xffffffff)),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      sites[index]["imageUrl"].toString()),
-                                  fit: BoxFit.cover),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          sites[index]["username"].toString(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 12),
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              },
+        Padding(
+          padding: EdgeInsets.all(20.0),
+          child: TextField(
+            decoration: InputDecoration(
+              fillColor: Colors.white,
+              filled: true,
+              contentPadding: EdgeInsets.all(20.0),
+              hintText: "Tìm kiếm địa danh mà bạn muốn đi",
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30.0),
+                borderSide: BorderSide(
+                  width: 0.8,
+                ),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30.0),
+                borderSide: BorderSide(width: 0.8),
+              ),
+              prefixIcon: Icon(Icons.search, size: 30),
+              suffixIcon: IconButton(
+                icon: Icon(Icons.clear),
+                onPressed: null,
+              ),
             ),
           ),
         ),
-        Divider(),
-        Column(
-          children: List.generate(
-            newFeeds.length,
-            (index) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 15,
-                          right: 15,
-                          bottom: 15,
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xffA844A1),
-                                    Color(0xffAB429A),
-                                    Color(0xffB43C88),
-                                    Color(0xffC33269),
-                                    Color(0xffD7243F),
-                                    Color(0xffF9A326),
-                                    Color(0xffF9DD26),
-                                  ],
-                                ),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.all(2),
-                                child: Container(
-                                  height: 35,
-                                  width: 35,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      width: 1,
-                                      color: Color(0xffffffff),
-                                    ),
-                                    image: DecorationImage(
-                                      image: NetworkImage(newFeeds[index]
-                                              ["profile"]
-                                          .toString()),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 20),
-                            Text(
-                              newFeeds[index]["username"].toString(),
-                              style: TextStyle(fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Icon(FontAwesome.ellipsis_v, size: 15),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Container(
-                      height: 20,
-                      child: Text(
-                        newFeeds[0]["caption"].toString(),
-                        style: TextStyle(
-                            color: Color(
-                              0xff000000,
-                            ),
-                            fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 400,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: NetworkImage(
-                              newFeeds[index]['imageUrl'].toString()),
-                          fit: BoxFit.cover),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 4, right: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            IconButton(
-                              splashRadius: 15,
-                              icon: SvgPicture.asset("assets/icons/heart.svg",
-                                  width: 25, height: 25),
-                              onPressed: null,
-                            ),
-                            IconButton(
-                              splashRadius: 15,
-                              icon: Icon(
-                                FontAwesome.commenting_o,
-                                size: 25,
-                                color: Color(0xff000000),
-                              ),
-                              onPressed: null,
-                            ),
-                            IconButton(
-                              splashRadius: 15,
-                              icon: SvgPicture.asset("assets/icons/share.svg",
-                                  width: 25, height: 25),
-                              onPressed: null,
-                            ),
-                          ],
-                        ),
-                        IconButton(
-                          icon:
-                              Icon(Feather.bookmark, color: Color(0xff000000)),
-                          onPressed: null,
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 15, right: 15),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${newFeeds[index]["likes"].toString()} like ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          newFeeds[index]["comments"].toString(),
-                          style: TextStyle(
-                            color: Color(0xffC8C8C8),
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Container(
-                              width: (size.width - 30) * 0.7,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: 28,
-                                    width: 28,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        width: 1,
-                                        color: Color(0xffC8C8C8),
-                                      ),
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                          newFeeds[index]["profile"].toString(),
-                                        ),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 25,
-                                    width: (size.width - 70) * 0.7,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 10, left: 10, right: 10),
-                                      child: TextField(
-                                        cursorColor:
-                                            Color(0xff000000).withOpacity(0.5),
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: "Add a comment",
-                                          hintStyle: TextStyle(
-                                            fontSize: 14,
-                                            color: Color(0xff000000)
-                                                .withOpacity(0.5),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: (size.width - 30) * 0.3,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text("🥰"),
-                                  SizedBox(width: 8),
-                                  Text("😎"),
-                                  SizedBox(width: 8),
-                                  Icon(
-                                    Icons.add_circle_outline,
-                                    size: 20,
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          newFeeds[index]['dateTime'].toString(),
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xff000000),
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              );
-            },
-          ),
-        ),
+        buildHorizontalList(context),
+        buildVerticalList(),
       ],
+    );
+  }
+
+  buildVerticalList() {
+    return Padding(
+      padding: EdgeInsets.all(20.0),
+      child: ListView.builder(
+        primary: false,
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: places.length,
+        itemBuilder: (BuildContext context, int index) {
+          Map place = places[index];
+          return VerticalPlaceItem(place);
+        },
+      ),
+    );
+  }
+
+  buildHorizontalList(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(top: 10.0, left: 20.0),
+      height: 250.0,
+      width: MediaQuery.of(context).size.width,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        primary: false,
+        itemCount: places.length,
+        itemBuilder: (BuildContext context, int index) {
+          Map place = places.reversed.toList()[index];
+          return HorizontalPlaceItem(place);
+        },
+      ),
     );
   }
 }
